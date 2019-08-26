@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {margin:0;padding:0}
+        #header {width:100%;height:150px;background:black;color:#fff}
+        #content .wrap_tab {width:100%;height:50px;background:red;}
+        #content .wrap_tab ul li {float:left;}
+        #content .wrap_tab ul:after {clear:both;content:'';display: table}
+        .fixedbar {width:100%;background:green}
+        #footer {width:100%;height:200px;margin-top:50px}
+    </style>
+</head>
+<body>
+    <div id="header">
+        header<br>
+        header<br>
+        header<br>
+        header<br>
+    </div>
+    <div id="content">
+        <div class="wrap_tab">
+            <ul>
+                <li>tab1</li>
+                <li>tab2</li>
+                <li>tab3</li>
+                <li>tab4</li>
+            </ul>
+        </div>
+        <div class="wrap_list">
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            <div class="fixedbar" data-fixed="fixed">
+                    asd;lfkajsdfl;kjsdf<br>
+                    asd;lfkajsdfl;kjsdf<br>
+                    asd;lfkajsdfl;kjsdf<br>
+                    asd;lfkajsdfl;kjsdf<br>
+            </div>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            <div class="fixedbar">
+                asd;lfkajsdfl;kjsdf<br>
+                asd;lfkajsdfl;kjsdf<br>
+                asd;lfkajsdfl;kjsdf<br>
+                asd;lfkajsdfl;kjsdf<br>
+            </div>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            content<br>
+            
+        </div>
+    </div>
+    <div id="footer">
+        footer<br>
+        footer<br>
+        footer<br>
+        footer<br>
+        footer<br>
+        footer<br>
+    </div>
+    <script>
+        const log = console.log;
+
+        class stickyTable {
+            constructor(targetEls) {
+                this.wh = window.innerHeight;
+                this.target = document.querySelectorAll('[data-fixed]');
+                this.targetHeights = [];
+                this.scrollY = 0;
+                this.targetLen = 0;
+                this.countIdx = 0;
+                this.targetEls = (typeof targetEls === 'string') ? document.querySelectorAll(targetEls) : targetEls;
+            }
+            init() {
+                this.setup();
+            }
+            setup() {
+                let heights = this.target;
+                let hLens = heights.length;
+                heights.forEach(item => this.targetHeights.push(window.pageYOffset + item.getBoundingClientRect().top));
+                return this.targetLen = hLens;
+            }
+            scrollCheck() {
+                let scrollY = window.scrollY || document.documentElement.scrollTop;
+                if(scrollY >= this.targetHeights[this.countIdx]) {
+                    this.addEl();
+                }else {
+                    this.removeEl();
+                }
+            }
+            addEl() {
+                this.targetEls[this.countIdx].classList.add('fixed');
+                if(this.countIdx < this.targetLen-1) {
+                    this.countIdx++;
+                }
+            }
+            removeEl() {
+                if(this.countIdx > 0) {
+                    this.targetEls[this.countIdx].classList.remove('fixed');
+                    this.countIdx--;
+                }else if(this.countIdx === 0) {
+                    this.targetEls[0].classList.remove('fixed');
+                }
+            }
+            addFix() {
+                this.scrollCheck();
+            }
+        };
+        document.addEventListener('DOMContentLoaded', _ => {
+            const fixed = new stickyTable('#content');
+            fixed.init();
+            document.addEventListener('scroll', _ => fixed.addFix());
+            document.addEventListener('resize', _ => fixed.init());
+        });
+    </script>
+</body>
+</html>
